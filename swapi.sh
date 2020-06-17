@@ -21,7 +21,7 @@ then
     exit 1
 fi
 
-dd if=dev/zero of=/swapfile count=${sizeSwap}M
+dd if=/dev/zero of=/swapfile count=${sizeSwap}M
 mkswap /swapfile
 echo >> /etc/fstab
 echo "# Swap" >> /etc/fstab
