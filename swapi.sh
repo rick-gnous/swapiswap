@@ -41,6 +41,7 @@ fi
 
 echo "Creation du swap"
 dd if=/dev/zero of=$pathFileSwap count=${sizeSwap}M
+chmod 600 $pathFileSwap
 mkswap $pathFileSwap
 
 echo "Mise à jour du fstab"
