@@ -21,16 +21,34 @@ then
     exit 1
 fi
 
+pathFileSwap="/swapfile"
+if [ -e $pathFileSwap ]
+then
+    read -p "Le fichier swapfile existe déjà à la racine. Le (S)upprimer, le (R)emplacer, (A)nnuler > " fileSwap
+    case "$fileSwap" in
+        s | S )
+            rm /swapfile
+        ;;
+        r | R )
+            read -p "Indiquez le chemin vers le nouveau fichier swap > " pathFileSwap
+        ;;
+        * )
+            echo "Annulation..."
+            exit 0
+        ;;
+    esac
+fi
+
 echo "Creation du swap"
-dd if=/dev/zero of=/swapfile count=${sizeSwap}M
-mkswap /swapfile
+dd if=/dev/zero of=$pathFileSwap count=${sizeSwap}M
+mkswap $pathFileSwap
 
 echo "Mise à jour du fstab"
 echo >> /etc/fstab
 echo "# Swap genere avec swapi !" >> /etc/fstab
-echo "/swapfile	none	swap	sw,loop	0 0" >> /etc/fstab
+echo "$pathFileSwap none	swap	sw,loop	0 0" >> /etc/fstab
 
 echo "Montage du swap"
-swapon /swapfile
+swapon $pathFileSwap
 
 echo "Vérifiez que le swap est bien activé grace à la commande : sudo swapon --show"
