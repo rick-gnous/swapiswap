@@ -27,6 +27,7 @@ then
     read -p "Le fichier swapfile existe déjà à la racine. Le (S)upprimer, le (R)emplacer, (A)nnuler > " fileSwap
     case "$fileSwap" in
         s | S )
+            swapoff -v $pathFileSwap
             rm /swapfile
         ;;
         r | R )
